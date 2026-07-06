@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Request {{ card_request.reference }}{% endblock %}
+{% block content %}
+<h1>Request {{ card_request.reference }}</h1>
+
+<dl class="details">
+  <dt>Type</dt><dd>{{ card_request.request_type }} ({{ card_request.card_scheme }})</dd>
+  <dt>Delivery</dt><dd>{{ card_request.delivery_method }}
+      {% if card_request.delivery_method == 'Home Delivery' %}
+        — {{ card_request.delivery_address }}{% endif %}</dd>
+  {% if card_request.delivery_agent %}
+  <dt>Delivery agent</dt><dd>{{ card_request.delivery_agent }}</dd>
+  {% endif %}
+  {% if card_request.reason %}
+  <dt>Details</dt><dd>{{ card_request.reason }}</dd>
+  {% endif %}
+  {% if card_request.document_filename %}
+  <dt>Document</dt>
+  <dd><a href="{{ url_for('uploaded_file', filename=card_request.document_filename) }}">View uploaded document</a></dd>
+  {% endif %}
+  <dt>Submitted</dt><dd>{{ card_request.created_at.strftime('%d %b %Y, %H:%M') }} UTC</dd>
+</dl>
+
+<h2>Tracking</h2>
+{% include "_timeline.html" %}
+
+<p><a href="{{ url_for('dashboard') }}">&larr; Back to my requests</a></p>
+{% endblock %}

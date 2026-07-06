@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}My Requests{% endblock %}
+{% block content %}
+<h1>My card requests</h1>
+<p><a class="btn btn-primary" href="{{ url_for('new_request') }}">Request a new card</a></p>
+
+{% if requests %}
+<div class="table-wrap">
+<table>
+  <caption class="visually-hidden">Your ATM card requests</caption>
+  <thead>
+    <tr>
+      <th scope="col">Reference</th>
+      <th scope="col">Type</th>
+      <th scope="col">Scheme</th>
+      <th scope="col">Delivery</th>
+      <th scope="col">Status</th>
+      <th scope="col">Submitted</th>
+      <th scope="col"><span class="visually-hidden">Actions</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in requests %}
+    <tr>
+      <td>{{ r.reference }}</td>
+      <td>{{ r.request_type }}</td>
+      <td>{{ r.card_scheme }}</td>
+      <td>{{ r.delivery_method }}</td>
+      <td><span class="status status-{{ r.status | lower | replace(' ', '-') }}">{{ r.status }}</span></td>
+      <td>{{ r.created_at.strftime('%d %b %Y') }}</td>
+      <td><a href="{{ url_for('request_detail', request_id=r.id) }}">View&nbsp;/&nbsp;track</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<p>You have not submitted any card requests yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Request a Card{% endblock %}
+{% block content %}
+<h1>Request an ATM card</h1>
+<form method="post" class="form" enctype="multipart/form-data" novalidate>
+  <fieldset>
+    <legend>Card details</legend>
+    <div class="field">
+      <label for="request_type">Request type</label>
+      <select id="request_type" name="request_type" required>
+        {% for t in request_types %}
+        <option value="{{ t }}" {% if form.get('request_type') == t %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="card_scheme">Card scheme</label>
+      <select id="card_scheme" name="card_scheme" required>
+        {% for s in card_schemes %}
+        <option value="{{ s }}" {% if form.get('card_scheme') == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="reason">Reason / additional details (optional)</label>
+      <textarea id="reason" name="reason" rows="2"
+        placeholder="e.g. my old card was damaged">{{ form.get('reason', '') }}</textarea>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Delivery</legend>
+    <div class="field">
+      <label for="delivery_method">Delivery method</label>
+      <select id="delivery_method" name="delivery_method" required>
+        {% for m in delivery_methods %}
+        <option value="{{ m }}" {% if form.get('delivery_method') == m %}selected{% endif %}>{{ m }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="delivery_address">Delivery address
+        <span class="help">(required for home delivery; defaults to your profile address)</span>
+      </label>
+      <textarea id="delivery_address" name="delivery_address"
+        rows="2">{{ form.get('delivery_address', current_user.address) }}</textarea>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Verification</legend>
+    <div class="field">
+      <label for="document">Identification document (PNG, JPG or PDF, max 2&nbsp;MB)</label>
+      <input type="file" id="document" name="document" accept=".png,.jpg,.jpeg,.pdf">
+    </div>
+  </fieldset>
+
+  <button type="submit" class="btn btn-primary">Submit request</button>
+</form>
+{% endblock %}

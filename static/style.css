@@ -1,0 +1,314 @@
+/* CardExpress — ATM Card Request & Delivery System */
+
+:root {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --text: #1c2733;
+  --muted: #5a6a7a;
+  --primary: #0b5ed7;
+  --primary-text: #ffffff;
+  --border: #d4dbe3;
+  --success-bg: #e6f4ea;
+  --success-text: #14532d;
+  --error-bg: #fdecea;
+  --error-text: #7f1d1d;
+}
+
+/* High-contrast mode (toggled by the button in the header) */
+:root[data-contrast="high"] {
+  --bg: #000000;
+  --surface: #000000;
+  --text: #ffffff;
+  --muted: #ffff00;
+  --primary: #ffff00;
+  --primary-text: #000000;
+  --border: #ffffff;
+  --success-bg: #003300;
+  --success-text: #00ff00;
+  --error-bg: #330000;
+  --error-text: #ff6666;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Accessibility helpers */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--primary);
+  color: var(--primary-text);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+.skip-link:focus { left: 0; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Layout */
+header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+}
+nav {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--text);
+  margin-right: auto;
+}
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+nav a {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+}
+nav a:hover { background: var(--bg); text-decoration: underline; }
+
+main {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+h1, h2, h3 { line-height: 1.25; }
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--primary);
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-primary { background: var(--primary); color: var(--primary-text); }
+.btn-danger { border-color: #b91c1c; color: #b91c1c; }
+.btn:hover { filter: brightness(1.08); }
+
+#contrast-toggle {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Flash messages */
+.flash {
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 0.5rem 0;
+}
+.flash-success { background: var(--success-bg); color: var(--success-text); }
+.flash-error { background: var(--error-bg); color: var(--error-text); }
+
+/* Forms */
+.form { max-width: 34rem; }
+.form fieldset {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+}
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+.help { font-weight: 400; color: var(--muted); font-size: 0.9rem; }
+input, select, textarea {
+  width: 100%;
+  padding: 0.55rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+}
+input[type="file"] { border: none; padding-left: 0; }
+.form-inline { display: flex; gap: 0.75rem; align-items: end; flex-wrap: wrap; }
+.form-inline .field { margin-bottom: 0; flex: 1 1 16rem; }
+
+/* Cards / stats */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+.stats .card h3 { font-size: 1.8rem; margin: 0; }
+.stats .card p { margin: 0.2rem 0 0; color: var(--muted); }
+
+/* Hero */
+.hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+th, td {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+th { background: var(--bg); }
+
+/* Status badges */
+.status {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.status-pending { background: #fff7e0; color: #7a5b00; }
+.status-approved { background: #e0f2fe; color: #075985; }
+.status-in-production { background: #ede9fe; color: #5b21b6; }
+.status-dispatched { background: #fef3c7; color: #92400e; }
+.status-delivered { background: var(--success-bg); color: var(--success-text); }
+.status-rejected { background: var(--error-bg); color: var(--error-text); }
+.status-on-hold { background: #f3f4f6; color: #374151; }
+:root[data-contrast="high"] .status { background: #000; color: #ffff00; }
+
+/* Progress tracker */
+.status-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1rem 0;
+}
+.status-line .step {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  color: var(--muted);
+  background: var(--surface);
+}
+.status-line .step.done {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.status-line .step.current {
+  background: var(--primary);
+  color: var(--primary-text);
+  font-weight: 700;
+}
+
+/* Timeline + misc lists */
+.timeline { padding-left: 1.2rem; }
+.timeline li { margin-bottom: 0.6rem; }
+
+.details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.details dt { font-weight: 700; }
+.details dd { margin: 0; }
+
+.notifications { list-style: none; padding: 0; }
+.notifications li {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.6rem;
+}
+.notifications time { color: var(--muted); font-size: 0.9rem; }
+
+.badge {
+  background: #b91c1c;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0 0.45rem;
+  font-size: 0.85rem;
+}
+
+.filter { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.filter a {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--surface);
+}
+.filter a[aria-current="true"] {
+  background: var(--primary);
+  color: var(--primary-text);
+  border-color: var(--primary);
+}

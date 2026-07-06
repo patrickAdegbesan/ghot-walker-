@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Manage {{ card_request.reference }}{% endblock %}
+{% block content %}
+<h1>Manage request {{ card_request.reference }}</h1>
+
+<dl class="details">
+  <dt>Customer</dt>
+  <dd>{{ card_request.customer.full_name }} — account
+      {{ card_request.customer.account_number }}<br>
+      {{ card_request.customer.email }} · {{ card_request.customer.phone }}</dd>
+  <dt>Type</dt><dd>{{ card_request.request_type }} ({{ card_request.card_scheme }})</dd>
+  <dt>Delivery</dt><dd>{{ card_request.delivery_method }}
+      {% if card_request.delivery_method == 'Home Delivery' %}
+        — {{ card_request.delivery_address }}{% endif %}</dd>
+  {% if card_request.delivery_agent %}
+  <dt>Delivery agent</dt><dd>{{ card_request.delivery_agent }}</dd>
+  {% endif %}
+  {% if card_request.reason %}
+  <dt>Customer note</dt><dd>{{ card_request.reason }}</dd>
+  {% endif %}
+  {% if card_request.document_filename %}
+  <dt>Document</dt>
+  <dd><a href="{{ url_for('uploaded_file', filename=card_request.document_filename) }}">View uploaded document</a></dd>
+  {% else %}
+  <dt>Document</dt><dd>None uploaded</dd>
+  {% endif %}
+</dl>
+
+<h2>Status</h2>
+{% include "_timeline.html" %}
+
+<h2>Actions</h2>
+<form method="post" class="form">
+  <div class="field">
+    <label for="note">Note to attach (optional, shown to the customer)</label>
+    <input type="text" id="note" name="note" maxlength="255">
+  </div>
+
+  {% if card_request.status in ('Pending', 'On Hold') %}
+    <button class="btn btn-primary" type="submit" name="action" value="approve">Approve</button>
+    <button class="btn btn-danger" type="submit" name="action" value="reject">Reject</button>
+    {% if card_request.status == 'Pending' %}
+      <button class="btn" type="submit" name="action" value="hold">Place on hold</button>
+    {% endif %}
+  {% elif card_request.status in STATUS_FLOW[1:-1] %}
+    {% set next_status = STATUS_FLOW[card_request.progress_index + 1] %}
+    {% if next_status == 'Dispatched' %}
+    <div class="field">
+      <label for="delivery_agent">Delivery agent / courier (required to dispatch)</label>
+      <input type="text" id="delivery_agent" name="delivery_agent"
+             placeholder="e.g. Swift Couriers NG">
+    </div>
+    {% endif %}
+    <button class="btn btn-primary" type="submit" name="action" value="advance">
+      Move to “{{ next_status }}”
+    </button>
+  {% else %}
+    <p>This request is <strong>{{ card_request.status }}</strong> — no further
+       actions are available.</p>
+  {% endif %}
+</form>
+
+<p><a href="{{ url_for('admin_requests') }}">&larr; Back to all requests</a></p>
+{% endblock %}

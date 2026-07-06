@@ -1,0 +1,26 @@
+{# Visual + screen-reader friendly progress tracker for a card request. #}
+<div class="status-line" role="img"
+     aria-label="Request progress: currently {{ card_request.status }}">
+  {% for step in STATUS_FLOW %}
+    <span class="step
+      {%- if card_request.progress_index >= loop.index0 %} done{% endif %}
+      {%- if card_request.status == step %} current{% endif %}">{{ step }}</span>
+  {% endfor %}
+</div>
+{% if card_request.status in ('Rejected', 'On Hold') %}
+  <p class="flash flash-error">This request is currently
+     <strong>{{ card_request.status }}</strong>.
+     {% if card_request.admin_note %}Reason: {{ card_request.admin_note }}{% endif %}</p>
+{% endif %}
+
+<h3>History</h3>
+<ol class="timeline">
+  {% for update in card_request.updates %}
+  <li>
+    <strong>{{ update.status }}</strong>
+    — <time datetime="{{ update.created_at.isoformat() }}">
+        {{ update.created_at.strftime('%d %b %Y, %H:%M') }} UTC</time>
+    {% if update.note %}<br><span class="help">{{ update.note }}</span>{% endif %}
+  </li>
+  {% endfor %}
+</ol>

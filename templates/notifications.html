@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+<h1>Notifications</h1>
+{% if notifications %}
+<ul class="notifications">
+  {% for n in notifications %}
+  <li>
+    <p>{{ n.message }}</p>
+    <time datetime="{{ n.created_at.isoformat() }}">
+      {{ n.created_at.strftime('%d %b %Y, %H:%M') }} UTC</time>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>You have no notifications yet.</p>
+{% endif %}
+{% endblock %}

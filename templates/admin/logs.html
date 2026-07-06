@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Activity Log{% endblock %}
+{% block content %}
+<h1>Activity log</h1>
+<p class="help">The most recent 200 recorded actions, newest first.</p>
+{% if logs %}
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">When (UTC)</th><th scope="col">Actor</th><th scope="col">Action</th></tr>
+  </thead>
+  <tbody>
+    {% for log in logs %}
+    <tr>
+      <td>{{ log.created_at.strftime('%d %b %Y, %H:%M:%S') }}</td>
+      <td>{{ log.actor }}</td>
+      <td>{{ log.action }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<p>No activity recorded yet.</p>
+{% endif %}
+{% endblock %}

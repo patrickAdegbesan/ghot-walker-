@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Request your ATM card online. Track it to your doorstep.</h1>
+  <p>
+    CardExpress lets bank customers request new, replacement or renewal ATM
+    cards without visiting a branch — then follow every step from approval to
+    delivery in real time.
+  </p>
+  <p class="hero-actions">
+    <a class="btn btn-primary" href="{{ url_for('register') }}">Create an account</a>
+    <a class="btn" href="{{ url_for('track') }}">Track a request</a>
+  </p>
+</section>
+
+<section aria-labelledby="how-heading">
+  <h2 id="how-heading">How it works</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>1. Submit a request</h3>
+      <p>Register, choose a card type (Verve, Visa or Mastercard) and upload
+         your verification document — all from your browser.</p>
+    </article>
+    <article class="card">
+      <h3>2. Bank verification</h3>
+      <p>Bank staff review and approve your request from the administrative
+         dashboard, then send your card to production.</p>
+    </article>
+    <article class="card">
+      <h3>3. Delivery &amp; tracking</h3>
+      <p>Get notified at every stage and track your card with a reference
+         code until it is picked up or delivered to your address.</p>
+    </article>
+  </div>
+</section>
+
+<section aria-labelledby="access-heading">
+  <h2 id="access-heading">Built for everyone</h2>
+  <p>
+    The platform supports keyboard navigation, screen readers and a
+    high-contrast mode, so customers with visual impairments can request and
+    track their cards independently.
+  </p>
+</section>
+{% endblock %}

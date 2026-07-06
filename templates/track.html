@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Track a Card{% endblock %}
+{% block content %}
+<h1>Track your card request</h1>
+<form method="post" class="form form-inline" novalidate>
+  <div class="field">
+    <label for="reference">Tracking reference</label>
+    <input type="text" id="reference" name="reference" required
+           placeholder="e.g. ATM-4F2A1B" autocomplete="off">
+  </div>
+  <button type="submit" class="btn btn-primary">Track</button>
+</form>
+
+{% if searched %}
+  {% if card_request %}
+    <h2>Request {{ card_request.reference }}</h2>
+    <p>{{ card_request.request_type }} ({{ card_request.card_scheme }}) —
+       {{ card_request.delivery_method }}</p>
+    {% include "_timeline.html" %}
+  {% else %}
+    <p class="flash flash-error" role="alert">
+      No request found for that reference. Please check the code and try again.</p>
+  {% endif %}
+{% endif %}
+{% endblock %}
